@@ -15,10 +15,15 @@ Channels and privates are collectively referred to as conversations.
 
 Ting is a website that works both on desktop and on mobile.
 
-Ting consists of two screens: The login screen and the chat screen. These are
-described below. When the user enters the URL ting.gr on their browser, they
-are taken to the Login screen. If they enter www.ting.gr, they are redirected
-to ting.gr and appropriate URL parameters are appended.
+Ting consists of serveral screens:
+
+* The login screen
+* The chat screen
+* The settings screen
+
+These are described below. When the user enters the URL ting.gr on their
+browser, they are taken to the Login screen. If they enter www.ting.gr, they
+are redirected to ting.gr and appropriate URL parameters are appended.
 
 When the user enters the URL ting.gr/channel, where channel is any
 valid channel name, the user is taken to the Login screen with the active
@@ -26,6 +31,9 @@ conversation set to the channel specified in the URL. When the user enters
 the URL ting.gr/u/user, where user is any valid user name, the user is taken
 to the Login screen with the active conversation set to a private with the
 user specified.
+
+However, if the user has stored credentials, then the Login screen is skipped
+and the user is taken directly to the Chat screen.
 
 The active conversation remains until the web page is refreshed, a different
 URL is visited, or the active channel is manually changed. When the active
@@ -74,6 +82,15 @@ rooms which is romantic or sexual interest, and focus on directing the user to
 make friendly, public conversations.
 
 # Login screen
+The Ting login system is somewhat peculiar in that it does not involve any
+passwords. This is for usability purposes. Ting users are authenticated by
+having their machine remember their credentials when they register and when
+they login. Registering is done by entering only a username.
+
+If a user wants to keep their username, they only have to enter an e-mail
+address. This e-mail address is later used to recover their account if they
+have wiped their login credentials.
+
 The Login screen consists of only a modal window with the heading "Ting", a
 textbox and a button.
 
@@ -95,13 +112,15 @@ is verified as follows:
  - The lower-case and upper-case greek characters α-ω and Α-Ω.
  - The numbers 0-9.
  - The symbols . , / ? ~ ! @ # $ % ^ & * ( ) - _ = + [ ] { } \ | ' " ` ; :
-3. The username must not be currently in use.
+3. The username must not be reserved.
 
-All usernames are not in use by default. If the username is valid, the
-username becomes in use and the user is taken to the Chat screen. The username
-is then associated with that user. The username stops being in use when the
-user exits the chat application by closing the browser window or by losing
-their internet connection.
+All usernames are not reserved by default. If the username is valid, the
+username is reserved and the user is taken to the Chat screen. The username is
+then associated with that user. The user's credentials are then stored on the
+machine they used to login. The next time the user accesses ting, the
+credentials are used to skip the Login screen. Once a username becomes
+reserved, no other user is allowed to use it, even if the user is not currently
+online.
 
 If the username is invalid, the textbox border is changed to red, the
 content text color is changed to red and an appropriate error is displayed as
@@ -112,10 +131,42 @@ follows:
    πρέπει να είναι έως 20 γράμματα."
 3. If the username field contains forbidden characters, the error message is
    "Το ψευδώνυμο πρέπει να περιλαμβάνει μόνο γράμματα, αριθμούς ή σύμβολα."
-4. If the username is currently in use, the error message is "Το ψευδώνυμο
-   το έχει άλλος."
+4. If the username is reserved, the error message is "Το ψευδώνυμο
+   το έχει άλλος. [Εγώ είμαι]"
 
 The error message is displayed above the textbox.
+
+The "[Εγώ είμαι]" button is displayed only if the username entered has an
+associated e-mail address with it. It is displayed on a separate line and can
+be used for the user to claim a previously registered username. Clicking this
+button changes the whole login window contents to the following text:
+
+"Σου στείλαμε ένα e-mail. Πάτησε το σύνδεσμο για να μπεις ως [nickname]."
+
+Where "[nickname]" is the nickname the user used to login. In addition, an
+e-mail is sent to the e-mail address associated with the user. The e-mail
+address reads as follows:
+
+"Γεια σου [nickname].
+
+Μπορείς να μπεις στο ting πατώντας τον παρακάτω σύνδεσμο:
+
+[link]"
+
+Where "[nickname]" is the nickname of the user and "[link]" is a link the user
+can use to login to their account. When the link is clicked by the user, they
+are taken to Ting, to the channel they had entered previously when they tried
+to access ting. They are taken directly to the Chat screen and their
+credentials are stored.
+
+These e-mail links can be used within 24 hours and they expire afterwards. If
+an expired link is clicked, then the Ting application opens and displays only a
+single error message with the following text:
+
+"Ο σύνδεσμος που πάτησες έληξε. [Θέλεις έναν καινούργιο;]"
+
+Clicking the button sends a new email to the user with a new link for logging
+in. The intended channel is maintained in this link also.
 
 On mobile, the whole screen is used to display the login window.
 
@@ -137,7 +188,20 @@ The chat screen consists of the following elements:
 *Image: The chat screen*
 
 The top bar is located at the top and takes up the whole screen horizontally.
-On the top left, it has the text "ting". On mobile, there is no top bar.
+On the top left, it has the text "ting". On the right, it has a cog icon.
+Clicking the cog icon pops up a menu with two options: Settings and Log out.
+Clicking on Settings takes the user to the Settings screen. Clicking Log out
+logs the user out and wipes their user credentials from their machine. If the
+user has no e-mail address associated with their account, then Log out also
+frees up the username for future use. Otherwise, the username remains reserved.
+After logging out, the Ting application is replaced with the following text:
+
+"Τα ξαναλέμε σύντομα! [Πίσω στο ting]"
+
+Clicking the button takes the user back to the Ting application and allows them
+to start over with logging in anew.
+
+On mobile, there is no top bar.
 
 Below it, the screen is split in two areas vertically. The left area contains
 the recent list and the right area is split horizontally in two smaller areas.
@@ -237,10 +301,14 @@ similar to the above desktop version, with the mobile differences described
 below.
 
 In the recent conversations screen, the text "Ting" is displayed at the top.
-Below it, a list of recent conversations appears. While in the recent
-conversations screen on mobile, no active conversation is highlighted. Tapping
-a recent conversation changes it to the active conversation and switches to the
-mobile chat screen.
+Next to it, on the right, is a cog icon. Clicking the cog icon displays a
+pop-up menu with two options, Settings and Log out, with similar semantics as
+the desktop top bar.
+
+Below the mobile top bar, a list of recent conversations appears. While in the
+recent conversations screen on mobile, no active conversation is highlighted.
+Tapping a recent conversation changes it to the active conversation and
+switches to the mobile chat screen.
 
 ![Mobile recent conversations screen](http://i.imgur.com/YuXy3Ra.jpg)
 *Image: The mobile recent conversations screen*
@@ -310,13 +378,75 @@ to indicate that the message is ephemeral and currently changing.
 ![Mobile chat typing](http://i.imgur.com/IjDrJlY.jpg)
 *Image: Mobile chat screen while typing*
 
+# Settings screen
+The settings screen allows a user to specify details about their user profile.
+
+It consists of a form at the top and a save button with the title "Αποθήκευση"
+at the bottom.
+
+The form has the user's avatar displayed on the left. Below it is a button with
+the title "Αλλαγή της εικόνας μου". Clicking it pops up a window allowing the
+user to select a new avatar. The avatar is uploaded and displayed in the avatar
+location within the settings. Before displaying it, the avatar is first cropped
+into a square and then resized to fit the avatar size.
+
+It is also possible for the user to upload an avatar by dragging a file onto
+their avatar within their settings. While dragging a file over the screen, the
+avatar location is changed into the text "Άφησε την εικόνα εδώ".
+
+If the uploaded file is not a valid avatar, then the error message "Δοκίμασε
+κάποια άλλη εικόνα" is displayed.
+
+Next to the avatar, the username is displayed.
+
+Below the avatar and the username, there are four labels associated with their
+respective inputs. The inputs are prefilled with the settings the user has
+entered previously.
+
+The first label is "E-mail". The input is a text box. If the user has left this
+field empty, a warning text appears above the label and the field stating:
+"Γράψε το e-mail σου ώστε να μην χάσεις την πρόσβαση στο λογαριασμό σου".
+
+The second label for the date of birth is "Ημερομηνία γέννησης". The input
+consists of three select fields, for the day, the month, and the year. All
+fields contain the range of valid numbers for days, months, and years
+respectively, as well as the "-" option. The days allow selecting from 1 to 31
+ascending, the months from 1 to 12 ascending, and the years from 1920 to the
+current year descending.
+
+The third label for the gender is "Φύλο". The input consists of a select field
+with three options "Αγόρι", "Κορίτσι" and "-".
+
+The fourth label for the location is "Περιοχή". The input is a select box
+listing all the major cities of Greece as well as the option "-".
+
+Clicking the save button validates the form as follows:
+
+1. The e-mail address is validated for form with a simple validation algorithm
+and not exhaustively. It must contain an `@` symbol. It must contain at least
+one alphanumeric character before the `@` sumbol. It must contain at least
+three characters after the `@` symbol, one of which must be a `.`. The e-mail
+must be at most 128 characters. The user can also leave the e-mail address
+empty if they do not wish to associate an e-mail address with their account.
+
+2. The date of birth must be a valid date.
+
+If the form fails to validate, the following error messages are displayed above
+their respective fields and the fields are highlighted in red:
+
+1. "Γράψε ένα έγκυρο e-mail" if the e-mail address is invalid.
+2. "Δώσε μία έγκυρη ημερομηνία γέννησης" if the date of birth is invalid.
+
+Otherwise, the form is saved and the user is taken back to the Chat screen.
+
+Notice that multiple users can share the same e-mail address.
+
 # Security
 For transport security purposes, ting.gr is served over HTTPS.
 
 # TODO
 This specification is limited. It will be extended with the following features in future editions:
 
-* Username registration
 * Avatars
 * Age / sex / location
 * Voice
