@@ -279,7 +279,8 @@ For efficiency reasons, very old messages can be removed from the chat history.
 
 The user information area is shown above the message history area in case the
 currently active conversation is a private. The user information area shows the
-partner's avatar and username.
+partner's avatar and username. Below the username, the age, the sex, and the
+location of the user are shown, if they are available.
 
 The message area is a textbox. The textbox is focused by default when the user
 enters the Chat screen. The textbox has the placeholder "Γράψε ένα μήνυμα...".
@@ -444,8 +445,6 @@ Notice that multiple users can share the same e-mail address.
 # TODO
 This specification is limited. It will be extended with the following features in future editions:
 
-* Avatars
-* Age / sex / location
 * Voice
 * Channel moderation
 * Subscription to channels
